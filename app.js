@@ -20,6 +20,7 @@ const articleSchema = {
 
 const Article = mongoose.model("Article", articleSchema);
 
+//////////// Requests targetting on all articles ////////////
 app.route("/articles")
 // GET all articles
 .get(function(req,res){
@@ -45,13 +46,26 @@ app.route("/articles")
     }
   });
 })
-
+// DELETE all articles
 .delete(function(req, res){
   Article.deleteMany(function(err){
     if (err) {
       res.send(err);
     } else {
       res.send("Successfully deleted all the articles.")
+    }
+  })
+});
+
+//////////// Requests targetting on single article ///////////////
+app.route("/articles/:articleTitle")
+// GET one single article
+.get(function(req,res){
+  Article.findOne({title: req.params.articleTitle}, function(err, foundArticle){
+    if (foundArticle) {
+      res.send(foundArticle);
+    } else {
+      res.send("No article found.");
     }
   })
 });
