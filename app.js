@@ -78,6 +78,7 @@ app.route("/articles/:articleTitle")
       }
     })
   })
+
   // .update() is deprecated instead use .updateOne() .replaceOne()
   .put(function(req, res) {
     Article.updateOne({
@@ -85,6 +86,22 @@ app.route("/articles/:articleTitle")
     }, {
       title: req.body.title,
       content: req.body.content
+    }, function(err) {
+      if (!err) {
+        res.send("Successfully updated article")
+      } else {
+        res.send(err)
+      }
+    })
+  })
+
+  // Update one part of the article
+  .patch(function(req, res) {
+
+    Article.updateOne({
+      title: req.params.articleTitle
+    }, {
+      $set: req.body
     }, function(err) {
       if (!err) {
         res.send("Successfully updated article")
