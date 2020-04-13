@@ -20,6 +20,7 @@ const articleSchema = {
 
 const Article = mongoose.model("Article", articleSchema);
 
+// GET - fetch all articles
 app.get("/articles", function(req,res){
   Article.find(function(err,foundArticles){
     if (!err) {
@@ -28,6 +29,21 @@ app.get("/articles", function(req,res){
       res.send(err);
     }
   })
+})
+
+// POST - create a new article
+app.post("/articles", function(req,res){
+  const newArticle = new Article({
+    title: req.body.title,
+    content: req.body.content
+  });
+  newArticle.save(function(err){
+    if (err) {
+      res.send(err);
+    } else {
+      res.send("Sucessfully added a new article.")
+    }
+  });
 })
 
 app.listen(3000, function() {
